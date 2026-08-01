@@ -29,6 +29,14 @@ st.write("TOTAL ROWS IN EXCEL:", len(df))
 st.write("COLUMNS:", df.columns.tolist())
 st.write("STATUS VALUES:")
 st.write(df["Status"].value_counts())
+st.write("DUE DATE SAMPLE:")
+st.write(df["Due Date"].head())
+
+st.write("COMPLETED DATE SAMPLE:")
+st.write(df["Completed At"].head())
+
+st.write("DATE TYPES:")
+st.write(df.dtypes)
 
 
 # ---------------------------------------------------
