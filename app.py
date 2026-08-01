@@ -25,6 +25,10 @@ st.write(
 # ---------------------------------------------------
 
 df = pd.read_excel("filtered_tasks.xlsx")
+st.write("TOTAL ROWS IN EXCEL:", len(df))
+st.write("COLUMNS:", df.columns.tolist())
+st.write("STATUS VALUES:")
+st.write(df["Status"].value_counts())
 
 
 # ---------------------------------------------------
