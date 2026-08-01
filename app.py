@@ -24,19 +24,16 @@ st.write(
 # 1. LOAD THE DATASET
 # ---------------------------------------------------
 
-# ---------------------------------------------------
-# 1. LOAD THE DATASET
-# ---------------------------------------------------
-
 df = pd.read_excel("filtered_tasks.xlsx")
 
-df["Due Date"] = pd.to_datetime(
-    df["Due Date"], 
-    errors="coerce"
+df["Completed At"] = (
+    df["Completed At"]
+    .astype(str)
+    .str.replace(r"\s(EST|EDT)$", "", regex=True)
 )
 
 df["Completed At"] = pd.to_datetime(
-    df["Completed At"], 
+    df["Completed At"],
     errors="coerce"
 )
 
