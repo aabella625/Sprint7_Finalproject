@@ -24,20 +24,49 @@ st.write(
 # 1. LOAD THE DATASET
 # ---------------------------------------------------
 
+# ---------------------------------------------------
+# 1. LOAD THE DATASET
+# ---------------------------------------------------
+
 df = pd.read_excel("filtered_tasks.xlsx")
+
+df["Due Date"] = pd.to_datetime(
+    df["Due Date"], 
+    errors="coerce"
+)
+
+df["Completed At"] = pd.to_datetime(
+    df["Completed At"], 
+    errors="coerce"
+)
+
 st.write("TOTAL ROWS IN EXCEL:", len(df))
 st.write("COLUMNS:", df.columns.tolist())
 st.write("STATUS VALUES:")
 st.write(df["Status"].value_counts())
-st.write("DUE DATE SAMPLE:")
-st.write(df["Due Date"].head())
 
-st.write("COMPLETED DATE SAMPLE:")
-st.write(df["Completed At"].head())
+# ADD THE DEBUG BLOCK HERE 👇
 
-st.write("DATE TYPES:")
-st.write(df.dtypes)
+st.write("VALID DUE DATES:")
+st.write(df["Due Date"].notna().sum())
 
+st.write("VALID COMPLETED DATES:")
+st.write(df["Completed At"].notna().sum())
+
+st.write("MIN COMPLETED DATE:")
+st.write(df["Completed At"].min())
+
+st.write("MAX COMPLETED DATE:")
+st.write(df["Completed At"].max())
+
+st.write("ROWS AFTER STATUS + DATE CHECK:")
+st.write(
+    df[
+        (df["Status"].str.lower().str.strip() == "complete")
+        & df["Due Date"].notna()
+        & df["Completed At"].notna()
+    ].shape
+)
 
 # ---------------------------------------------------
 # 2. CLEAN THE DATA
