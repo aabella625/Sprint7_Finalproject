@@ -19,56 +19,40 @@ st.write(
     "processes and employees are most likely to miss their deadlines."
 )
 
-
 # ---------------------------------------------------
 # 1. LOAD THE DATASET
 # ---------------------------------------------------
 
 df = pd.read_excel("filtered_tasks.xlsx")
 
+
+# ---------------------------------------------------
+# 2. CLEAN THE DATA
+# ---------------------------------------------------
+
+# Convert Due Date
+df["Due Date"] = pd.to_datetime(
+    df["Due Date"],
+    errors="coerce"
+)
+
+
+# Remove EST / EDT from Completed At
 df["Completed At"] = (
     df["Completed At"]
     .astype(str)
     .str.replace(r"\s(EST|EDT)$", "", regex=True)
 )
 
+
+# Convert Completed At
 df["Completed At"] = pd.to_datetime(
     df["Completed At"],
     errors="coerce"
 )
 
-st.write("TOTAL ROWS IN EXCEL:", len(df))
-st.write("COLUMNS:", df.columns.tolist())
-st.write("STATUS VALUES:")
-st.write(df["Status"].value_counts())
 
-# ADD THE DEBUG BLOCK HERE 👇
-
-st.write("VALID DUE DATES:")
-st.write(df["Due Date"].notna().sum())
-
-st.write("VALID COMPLETED DATES:")
-st.write(df["Completed At"].notna().sum())
-
-st.write("MIN COMPLETED DATE:")
-st.write(df["Completed At"].min())
-
-st.write("MAX COMPLETED DATE:")
-st.write(df["Completed At"].max())
-
-st.write("ROWS AFTER STATUS + DATE CHECK:")
-st.write(
-    df[
-        (df["Status"].str.lower().str.strip() == "complete")
-        & df["Due Date"].notna()
-        & df["Completed At"].notna()
-    ].shape
-)
-
-# ---------------------------------------------------
-# 2. CLEAN THE DATA
-# ---------------------------------------------------
-
+# Clean text columns
 
 df["Status"] = (
     df["Status"]
@@ -91,6 +75,28 @@ df["Task Category"] = (
 
 
 # ---------------------------------------------------
+# DEBUG
+# ---------------------------------------------------
+
+st.write("TOTAL ROWS IN EXCEL:", len(df))
+
+st.write("STATUS VALUES:")
+st.write(df["Status"].value_counts())
+
+st.write("VALID DUE DATES:")
+st.write(df["Due Date"].notna().sum())
+
+st.write("VALID COMPLETED DATES:")
+st.write(df["Completed At"].notna().sum())
+
+st.write("MIN COMPLETED DATE:")
+st.write(df["Completed At"].min())
+
+st.write("MAX COMPLETED DATE:")
+st.write(df["Completed At"].max())
+
+
+# ---------------------------------------------------
 # 3. FILTER COMPLETED TASKS
 # ---------------------------------------------------
 
@@ -98,11 +104,15 @@ completed_df = df[
     (df["Status"] == "complete")
     & df["Due Date"].notna()
     & df["Completed At"].notna()
-    & (df["Due Date"] >= "2026-04-01")
-    & (df["Completed At"] >= "2026-04-01")
+    & (df["Due Date"] >= pd.Timestamp("2026-04-01"))
+    & (df["Completed At"] >= pd.Timestamp("2026-04-01"))
 ].copy()
 
 
+st.write(
+    "ROWS AFTER STATUS + DATE CHECK:",
+    completed_df.shape
+)
 # ---------------------------------------------------
 # 4. CREATE CALCULATED COLUMNS
 # ---------------------------------------------------
