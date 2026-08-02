@@ -69,17 +69,6 @@ st.write(
 # 2. CLEAN THE DATA
 # ---------------------------------------------------
 
-df["Due Date"] = pd.to_datetime(
-    df["Due Date"],
-    format="mixed",
-    errors="coerce"
-)
-
-df["Completed At"] = pd.to_datetime(
-    df["Completed At"],
-    format="mixed",
-    errors="coerce"
-)
 
 df["Status"] = (
     df["Status"]
@@ -302,10 +291,40 @@ st.caption(
     "Average Days Late is calculated only among tasks that were completed "
     "after their due date."
 )
+# ---------------------------------------------------
+# 8. HISTOGRAM - DISTRIBUTION OF TASK DELAYS
+# ---------------------------------------------------
 
+st.header("Distribution of Task Delays")
+
+st.write(
+    "This histogram shows how many tasks were completed before or after "
+    "their assigned deadline."
+)
+
+fig_delay = px.histogram(
+    completed_df,
+    x="Delay (Days)",
+    nbins=15,
+    title="Distribution of Days Relative to Due Date",
+    labels={
+        "Delay (Days)": "Days Before (-) or After (+) Due Date",
+        "count": "Number of Tasks"
+    }
+)
+
+fig_delay.update_layout(
+    xaxis_title="Days Before (-) or After (+) Due Date",
+    yaxis_title="Number of Tasks"
+)
+
+st.plotly_chart(
+    fig_delay,
+    use_container_width=True
+)
 
 # ---------------------------------------------------
-# 8. DATASET PREVIEW
+# 8.1 DATASET PREVIEW
 # ---------------------------------------------------
 
 with st.expander("View completed task data"):
