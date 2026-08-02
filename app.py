@@ -74,27 +74,6 @@ df["Task Category"] = (
 )
 
 
-# ---------------------------------------------------
-# DEBUG
-# ---------------------------------------------------
-
-st.write("TOTAL ROWS IN EXCEL:", len(df))
-
-st.write("STATUS VALUES:")
-st.write(df["Status"].value_counts())
-
-st.write("VALID DUE DATES:")
-st.write(df["Due Date"].notna().sum())
-
-st.write("VALID COMPLETED DATES:")
-st.write(df["Completed At"].notna().sum())
-
-st.write("MIN COMPLETED DATE:")
-st.write(df["Completed At"].min())
-
-st.write("MAX COMPLETED DATE:")
-st.write(df["Completed At"].max())
-
 
 # ---------------------------------------------------
 # 3. FILTER COMPLETED TASKS
