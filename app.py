@@ -312,17 +312,19 @@ st.plotly_chart(
     use_container_width=True
 )
 
+
 # ---------------------------------------------------
 # 8.1 DATASET PREVIEW
 # ---------------------------------------------------
 
-with st.expander("View completed task data"):
+show_data = st.checkbox("Show completed task data")
+
+if show_data:
     st.dataframe(
         completed_df,
         use_container_width=True,
         hide_index=True
     )
-
 
 # ---------------------------------------------------
 # 9. PERFORMANCE BY TASK CATEGORY
